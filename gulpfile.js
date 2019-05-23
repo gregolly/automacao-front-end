@@ -1,7 +1,12 @@
+//Adiciona os modulos instalados
 const gulp = require('gulp');
 const sass = require('gulp-sass');
 const autoPrefixer = require('gulp-autoprefixer');
+const browserSync = require('browser-sync').create();
+const concat = require('gulp-concat');
+const babel = require('gulp-babel');
 
+//função para compilar o sass e adicionar os prefixos
 function compilaSass(){
   return gulp
   .src('css/scss/*.scss')
@@ -13,12 +18,45 @@ function compilaSass(){
     cascade: false
   }))
   .pipe(gulp.dest('css/'))
+  .pipe(browserSync.stream());
 }
 
+//tarefa de gulp para função de sass
 gulp.task('sass', compilaSass);
 
-function watch(){
-  gulp.watch('css/scss/*.scss', compilaSass);
+//função para juntar os js
+function gulpJS(){
+  return gulp
+  .src('js/main/*.js')
+  .pipe(concat('main.js'))
+  .pipe(babel({
+    presets: ['env']
+  }))
+  .pipe(gulp.dest('js/'))
 }
 
-gulp.task('default', watch);
+gulp.task('mainjs', gulpJS)
+
+//função para iniciar o browser
+function browser(){
+  browserSync.init({
+    server: {
+      baseDir: "./"
+    }
+  })
+}
+
+//tarefa para inciar o browser-sync
+gulp.task('browser-sync', browser);
+
+//função para observer funções do gulp
+function watch(){
+  gulp.watch('css/scss/*.scss', compilaSass);
+  gulp.watch('js/main/*.js', gulpJS);
+  gulp.watch(['*.html', '*.php']).on('change', browserSync.reload);
+}
+
+//incia a tarefa do watch
+gulp.task('watch', watch)
+//tarefa padrão do gulp que inicia o watch e browser-sync
+gulp.task('default', gulp.parallel('watch', 'browser-sync', 'sass', 'mainjs'));

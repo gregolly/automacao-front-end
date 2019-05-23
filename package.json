@@ -4,11 +4,17 @@
   "description": "",
   "main": "gulpfile.js",
   "dependencies": {
+    "browser-sync": "^2.26.5",
     "gulp": "^4.0.2",
     "gulp-autoprefixer": "^6.1.0",
+    "gulp-concat": "^2.6.1",
     "gulp-sass": "^4.0.2"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-preset-env": "^1.7.0",
+    "gulp-babel": "^7.0.1"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
