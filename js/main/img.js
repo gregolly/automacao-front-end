@@ -1,3 +1,4 @@
+
 {
 
 const img = document.querySelector('.modal-img');
@@ -13,3 +14,5 @@ function animaImg() {
 img.addEventListener('click', animaImg);
 
 }
+
+
